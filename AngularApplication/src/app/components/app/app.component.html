@@ -1,0 +1,93 @@
+<h1>Angular application</h1>
+
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="step1FormGroup">
+    <form [formGroup]="step1FormGroup">
+
+      <ng-template matStepLabel>Step 1</ng-template>
+
+      <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input [(ngModel)]="user.login" matInput placeholder="Login" formControlName="login" email required>
+        <mat-error>
+          {{errors['email']}}
+        </mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <div formGroupName="passwordGroup">
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="password" [(ngModel)]="user.password" matInput placeholder="Password" formControlName="password" required>
+          <mat-error>
+            {{errors['password']}}
+          </mat-error>
+        </mat-form-field>
+
+        <br />
+
+        <mat-form-field>
+          <mat-label>Confirm password</mat-label>
+          <input type="password" [(ngModel)]="user.passwordConfirm" matInput placeholder="ConfirmPassword" formControlName="confirmPassword" required>
+          <mat-error>
+            {{errors['confirmPassword']}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <br />
+
+      <mat-checkbox [(ngModel)]="user.agree" formControlName="agree" required>Agree to work for food</mat-checkbox>
+
+      <div>
+        <button mat-button matStepperNext>Go to step 2</button>
+      </div>
+
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="step2FormGroup">
+    <form [formGroup]="step2FormGroup">
+
+      <ng-template matStepLabel>Step 2</ng-template>
+
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <mat-select [(ngModel)]="user.country" placeholder="Country" formControlName="country" (valueChange)="changeCountry($event)" required>
+          <mat-option *ngFor="let country of countries" [value]="country">
+            {{country.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          {{errors['country']}}
+        </mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <mat-form-field>
+        <mat-label>Province</mat-label>
+        <mat-select [(ngModel)]="user.province" placeholder="Province" formControlName="province" required>
+          <mat-option *ngFor="let province of provinces" [value]="province">
+            {{province.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          {{errors['province']}}
+        </mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <div>
+        <button mat-button (click)="submit()" [disabled]="!step2FormGroup.valid">Save</button>
+      </div>
+
+      <br />
+
+      <h1 *ngIf="userSavedSuccess"> Register Success </h1>
+
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
